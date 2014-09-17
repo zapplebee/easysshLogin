@@ -1,6 +1,6 @@
 <pre>
 <?php
-
+session_start();
 include("../../credentials.php");
 set_include_path("phpseclib/phpseclib");
 include("Net/SFTP.php");
@@ -21,13 +21,17 @@ include("Net/SFTP.php");
 class user{
   private $address;
   private $port;
+  private $secret;
 
   function __construct($creds){
   
     $this->address = $creds['address'];
     $this->port = $creds['port'];
+    $this->secret = $creds['secret'];
+
   
   }
+
 
 
   public function login($user, $pass){
@@ -49,9 +53,19 @@ class user{
       return ("Connection to server failed.");
     }
     else {
+      $_COOKIE['easysshLogin'] = openssl_encrypt(json_encode(array($user,$pass)), "bf-ecb", $this->secret);
       return "Good connection and credentials";
     }
 
+  }
+  
+  public function getUserCreds(){
+  if (!isset($_COOKIE['easysshLogin'])){
+    return "Did not log in";
+  }
+  $creds = json_decode(openssl_decrypt($_COOKIE['easysshLogin'], "bf-ecb", $this->secret),true);
+  return $creds;
+  
   }
 
 }
@@ -68,5 +82,8 @@ foreach ($testCases as $key => $pass){
 
 }
 
+
+echo "<HR>";
+print_r ($user->getUserCreds());
 ?>
 </pre>
