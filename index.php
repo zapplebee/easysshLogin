@@ -23,13 +23,16 @@ class user{
   private $address;
   private $port;
   private $secret;
+  private $user;
 
   function __construct($creds){
   
+    if(!isset($_SESSION['easysshLogin'])){
+      $_SESSION['easysshLogin'] = array();
+    }
     $this->address = $creds['address'];
     $this->port = $creds['port'];
     $this->secret = $creds['secret'];
-
   
   }
 
@@ -54,17 +57,18 @@ class user{
       return ("Connection to server failed.");
     }
     else {
-      $_COOKIE['easysshLogin'] = openssl_encrypt(json_encode(array($user,$pass)), "bf-ecb", $this->secret);
+      $this->user = $user;
+      $_SESSION['easysshLogin'][$this->user] = openssl_encrypt(json_encode(array($user,$pass)), "bf-ecb", $this->secret);
       return "Good connection and credentials";
     }
 
   }
   
   public function getUserCreds(){
-  if (!isset($_COOKIE['easysshLogin'])){
+  if (!isset($_SESSION['easysshLogin'][$this->user])){
     return "Did not log in";
   }
-  $creds = json_decode(openssl_decrypt($_COOKIE['easysshLogin'], "bf-ecb", $this->secret),true);
+  $creds = json_decode(openssl_decrypt($_SESSION['easysshLogin'][$this->user], "bf-ecb", $this->secret),true);
   return $creds;
   
   }
@@ -83,8 +87,7 @@ foreach ($testCases as $key => $pass){
 
 }
 
-
-echo "<HR>";
 print_r ($user->getUserCreds());
+
 ?>
 </pre>
