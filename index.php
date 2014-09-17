@@ -20,6 +20,7 @@ include("Net/SFTP.php");
 */
 
 class user{
+
   private $address;
   private $port;
   private $secret;
@@ -43,33 +44,42 @@ class user{
     $pattern ="#[^A-Za-z0-9\._-]#";
     preg_match($pattern, $user, $results);
     if(!empty($results) || $user[0] == "-" || strlen($user) > 8 || strlen($user) == 0){
+    
       return "Bad Username";
+      
     }
 
     $pattern ="#[\n\t\r]#";
     preg_match($pattern, $pass, $results);
     if(!empty($results)){
+    
       return "Bad Password";
+      
     }
   
     $SSH = new Net_SSH2($this->address, $this->port);
     if (!$SSH->login($user, $pass)) {
+    
       return ("Connection to server failed.");
+      
     }
     else {
+    
       $this->user = $user;
       $_SESSION['easysshLogin'][$this->user] = openssl_encrypt(json_encode(array($user,$pass)), "bf-ecb", $this->secret);
       return "Good connection and credentials";
+      
     }
 
   }
   
   public function getUserCreds(){
-  if (!isset($_SESSION['easysshLogin'][$this->user])){
-    return "Did not log in";
-  }
-  $creds = json_decode(openssl_decrypt($_SESSION['easysshLogin'][$this->user], "bf-ecb", $this->secret),true);
-  return $creds;
+  
+    if (!isset($_SESSION['easysshLogin'][$this->user])){
+      return "Did not log in";
+    }
+    $creds = json_decode(openssl_decrypt($_SESSION['easysshLogin'][$this->user], "bf-ecb", $this->secret),true);
+    return $creds;
   
   }
 
@@ -80,14 +90,15 @@ class user{
 $user = new user($sshServer);
 
 foreach ($testCases as $key => $pass){
+
   echo "<h3>$key</h3>";
   echo "<h3>$pass</h3>";
   echo $user->login($key,$pass);
   echo "<HR>";
+  print_r ($user->getUserCreds());
+  echo "<HR>";
 
 }
-
-print_r ($user->getUserCreds());
 
 ?>
 </pre>
