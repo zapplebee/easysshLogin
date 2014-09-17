@@ -11,6 +11,7 @@ include("Net/SFTP.php");
   $sshServer = array(
     "address" => "YOUR SERVER ADDRESS",
     "port"    => "YOUR SERVER PORT",
+    "secret"  => "YOUR SECRET ENCRYPTION PHRASE",
   );
 
   Set test cases. In this case it has been included in "../../credentials.php".
