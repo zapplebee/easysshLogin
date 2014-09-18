@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>easysshLogin Demo</h1>
-<h3>Set your server and user details.</h3>
+<h2>Set your server and user details.</h2>
 <form action="" method="POST">
 <pre>
   $sshServer = array(
@@ -31,14 +31,14 @@ include('classes.php');
  exit;
  }
 
-  $user = new easysshLogin(array("address" => $_POST['address'],"port" => $_POST['port'], "secret" => $_POST['secret']));
+  $user = new easysshLogin($_POST['address'],$_POST['port'],$_POST['secret']);
 
 
 
 ?>
-<h3>The easysshLogin object public attributes and functions</h3>
+<h2>The easysshLogin object public attributes and functions</h2>
 
-<h4>$user->login($user,$pass)</h4>
+<h3>$user->login($user,$pass)</h3>
 <p>Returns a boolean value indicating the login success or failure. This must be executed first.</p> 
 <pre>
 echo $user->login("username","password");
@@ -49,7 +49,7 @@ echo $user->login("username","password");
 <hr>
 
 
-<h4>$conn = $user->sshConnection()</h4>
+<h3>$conn = $user->sshConnection()</h3>
 <p>Returns a logged in phpseclib Net_SSH object</p>
 <pre>
 $conn = $user->sshConnection();
@@ -63,7 +63,7 @@ echo $conn->exec("date");
 </pre>
 <hr>
 
-<h4>$conn = $user->sftpConnection()</h4>
+<h3>$conn = $user->sftpConnection()</h3>
 <p>Returns a logged in phpseclib Net_SFTP object</p>
 <pre>
 $conn = $user->sftpConnection();
@@ -77,7 +77,7 @@ print_r($conn->nlist("."));
 </pre>
 <hr>
 
-<h4>$user->username</h4>
+<h3>$user->username</h3>
 <p>Returns the username</p>
 <pre>
 echo $user->username;
@@ -86,7 +86,7 @@ echo $user->username;
 <?php echo $user->username;?></pre>
 <hr>
 
-<h4>$user->errors</h4>
+<h3>$user->errors</h3>
 <p>Returns an array of errors</p>
 <pre>
 print_r($user->errors);

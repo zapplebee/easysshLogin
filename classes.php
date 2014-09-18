@@ -16,14 +16,14 @@ class easysshLogin{
   public $errors = array();
   private $connectionStatus = false;
 
-  function __construct($creds){
+  function __construct($server,$port,$secret){
   
     if(!isset($_SESSION['easysshLogin'])){
       $_SESSION['easysshLogin'] = array();
     }
-    $this->address = $creds['address'];
-    $this->port = $creds['port'];
-    $this->secret = $creds['secret'];
+    $this->address = $server;
+    $this->port = $port;
+    $this->secret = $secret;
   
   }
 
