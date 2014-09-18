@@ -1,6 +1,7 @@
-<pre>
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include("../../credentials.php");
 set_include_path("phpseclib/phpseclib");
 include("Net/SFTP.php");
@@ -140,4 +141,3 @@ foreach ($testCases as $key => $pass){
 }
 
 ?>
-</pre>
