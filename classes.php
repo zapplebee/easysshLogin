@@ -7,12 +7,12 @@ set_include_path("phpseclib/phpseclib");
 include("Net/SFTP.php");
 
 
-class user{
+class easysshLogin{
 
   private $address;
   private $port;
   private $secret;
-  public $user;
+  public $username;
   public $errors = array();
   private $connectionStatus = false;
 
@@ -55,9 +55,9 @@ class user{
     }
     else {
     
-      $this->user = $user;
+      $this->username = $user;
       $this->connectionStatus = true;
-      $_SESSION['easysshLogin'][$this->user] = openssl_encrypt(json_encode(array($user,$pass)), "bf-ecb", $this->secret);
+      $_SESSION['easysshLogin'][$this->username] = openssl_encrypt(json_encode(array($user,$pass)), "bf-ecb", $this->secret);
       return true;
       
     }
@@ -66,10 +66,10 @@ class user{
   
   private function getUserCreds(){
   
-    if (!isset($_SESSION['easysshLogin'][$this->user])){
+    if (!isset($_SESSION['easysshLogin'][$this->username])){
       return false;
     }
-    $creds = json_decode(openssl_decrypt($_SESSION['easysshLogin'][$this->user], "bf-ecb", $this->secret),true);
+    $creds = json_decode(openssl_decrypt($_SESSION['easysshLogin'][$this->username], "bf-ecb", $this->secret),true);
     return $creds;
   
   }
