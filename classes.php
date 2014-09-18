@@ -2,21 +2,10 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-include("../../credentials.php");
+
 set_include_path("phpseclib/phpseclib");
 include("Net/SFTP.php");
 
-/*
-  Set your server details & test cases. In this case it has been included in "../../credentials.php".;
-
-  $sshServer = array(
-    "address" => "YOUR SERVER ADDRESS",
-    "port"    => "YOUR SERVER PORT",
-    "secret"  => "YOUR SECRET ENCRYPTION PHRASE",
-  );
-  
-  $testCases = array("user" => "pass");
-*/
 
 class user{
 
@@ -124,19 +113,6 @@ class user{
     return $SFTP;
 
   }
-
-}
-
-
-
-$user = new user($sshServer);
-
-foreach ($testCases as $key => $pass){
-
-  $user->login($key,$pass);
-  $conn = $user->sshConnection();
-  echo $conn->exec("date\n");
-  echo "<HR>";
 
 }
 
